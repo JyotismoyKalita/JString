@@ -17,7 +17,7 @@ To use JString in your project, simply include the `Jstring.h` and `Jstring.c` f
 
 ```sh
 # Clone the repository (after pushing to GitHub)
-git clone https://github.com/yourusername/JString.git
+git clone https://github.com/JyotismoyKalita/JString.git
 cd JString
 ```
 
