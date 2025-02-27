@@ -49,6 +49,7 @@ int main() {
 
 ### Expected Output:
 ```
+Enter your string: Hello World!
 Hello World!
 ```
 
