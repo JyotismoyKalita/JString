@@ -149,14 +149,12 @@ int jreplace(JString *str, const char *oldSubstr, const char *newSubstr) {
     
     char *pos = strstr(str->data, oldSubstr);
     if (!pos) {
-        //printf("jreplace: Substring not found\n");
         return JSTRING_SUCCESS;
     }
     int index = pos - str->data;
     int oldLen = strlen(oldSubstr);
     int newLen = strlen(newSubstr);
     int diff = newLen - oldLen;
-    int isEnd = (index + oldLen == '\0');
     
     if (diff > 0) {
         while (strlen(str->data) + diff >= str->size) {
@@ -164,14 +162,8 @@ int jreplace(JString *str, const char *oldSubstr, const char *newSubstr) {
         }
     }
 
-    if(isEnd){
-        strcpy(str->data+index, newSubstr);
-        str->data[index+newLen] = '\0';
-    }
-    else{
-        memmove(str->data + index + newLen, str->data + index + oldLen, strlen(str->data) - index - oldLen + 1);
-        memcpy(str->data + index, newSubstr, newLen);
-    }
+    memmove(str->data + index + newLen, str->data + index + oldLen, strlen(str->data) - index - oldLen + 1);
+    memcpy(str->data + index, newSubstr, newLen);
     
     return JSTRING_SUCCESS;
 }
