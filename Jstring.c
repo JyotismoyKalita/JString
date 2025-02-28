@@ -156,17 +156,22 @@ int jreplace(JString *str, const char *oldSubstr, const char *newSubstr) {
     int oldLen = strlen(oldSubstr);
     int newLen = strlen(newSubstr);
     int diff = newLen - oldLen;
+    int isEnd = (index + oldLen == '\0');
     
     if (diff > 0) {
         while (strlen(str->data) + diff >= str->size) {
             if (jexpand(str) != JSTRING_SUCCESS) return JSTRING_ALLOC_FAILED;
         }
     }
-    
-    for(int i = 0; i<newLen; i++){
-        str->data[index+i] = newSubstr[i];
+
+    if(isEnd){
+        strcpy(str->data+index, newSubstr);
+        str->data[index+newLen] = '\0';
     }
-    str->data[index+newLen] = '\0';
+    else{
+        memmove(str->data + index + newLen, str->data + index + oldLen, strlen(str->data) - index - oldLen + 1);
+        memcpy(str->data + index, newSubstr, newLen);
+    }
     
     return JSTRING_SUCCESS;
 }

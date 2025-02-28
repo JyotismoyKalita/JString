@@ -40,11 +40,12 @@ void test_jsubstr() {
 }
 
 void test_jreplace() {
-    Jstring(str, "Hello World");
+    Jstring(str, "Hello World BRO!");
     printf("Before replace: %s\n", jget(&str));
-    int result = jreplace(&str, "World", "JString");
+    int result1 = jreplace(&str, "World", "JString");
+    int result2 = jreplace(&str, "BRO!", "Man!!");
     printf("After replace: %s\n", jget(&str));
-    if (result == JSTRING_SUCCESS && strcmp(jget(&str), "Hello JString") == 0) {
+    if (result1 == JSTRING_SUCCESS && result2 == JSTRING_SUCCESS && strcmp(jget(&str), "Hello JString Man!!") == 0) {
         printf("jreplace: PASS\n");
     } else {
         printf("jreplace: FAIL\n");
