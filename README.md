@@ -16,8 +16,8 @@ JString(Initial J is taken from my name) is a lightweight and efficient dynamic 
 To use JString in your project, simply include the `Jstring.h` and `Jstring.c` files in your source code.
 
 ```sh
-# Clone the repository (after pushing to GitHub)
-git clone https://github.com/yourusername/JString.git
+# Clone the repository
+git clone https://github.com/JyotismoyKalita/JString.git
 cd JString
 ```
 
@@ -49,6 +49,7 @@ int main() {
 
 ### Expected Output:
 ```
+Enter your string: Hello World!
 Hello World!
 ```
 
@@ -94,5 +95,5 @@ Contributions are welcome! Feel free to submit issues, feature requests, or pull
 This project is licensed under the MIT License.
 
 ## Author
-Developed by [Jyotismoy Kalita](https://github.com/yourusername)
+Developed by [Jyotismoy Kalita](https://github.com/JyotismoyKalita)
 
