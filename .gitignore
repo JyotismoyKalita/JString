@@ -1,1 +1,14 @@
-test.exe
+# Ignore compiled binaries
+*.exe
+*.o
+*.out
+
+# Ignore temporary files
+*.log
+*.tmp
+*.swp
+
+# Ignore editor-specific files
+.vscode/
+.idea/
+*.bak
