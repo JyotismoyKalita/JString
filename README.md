@@ -30,7 +30,13 @@ gcc your_program.c Jstring.c -o your_program
 ```
 
 ### Declaring a JString
-To ensure **proper initialization**, always use the `Jstring` macro instead of directly declaring a `JString` variable. This avoids uninitialized values and ensures the struct starts as `{NULL, 0}`.
+To ensure **proper initialization**, use the `jcreate("value")` function while declaring a `JString` variable assigned with string "value".
+Te declare a **NULL** JString variable, you can:
+- `JString x = jcreate(NULL);`
+- `JString x = NULL;`
+### WARNING:
+- Do not simply write `JString x;` and then perform other operations as it will have **garbage value pointing to unknown address**.
+- Always use `jdestroy(str);` when you dont need it or at the end of the function it was defined in to avoid memory leak.
 
 ### Example Code
 ```c
@@ -38,11 +44,11 @@ To ensure **proper initialization**, always use the `Jstring` macro instead of d
 #include "Jstring.h"
 
 int main() {
-    Jstring(str);
-    printf("Enter your string: ");
-    jscan(&str);
-    jprint(&str);
-    jclear(&str);
+    JString str = jcreate(NULL);
+    jprintf("Enter your string: ");
+    jscan(str);
+    jprint("The string you entered is: %j");
+    jclear(str);
     return 0;
 }
 ```
@@ -50,37 +56,122 @@ int main() {
 ### Expected Output:
 ```
 Enter your string: Hello World!
-Hello World!
+The string you entered is: Hello World!
 ```
 
 ## Functions
-### Memory Management
-- `int jexpand(JString *str)` - Expands allocated memory dynamically.
-- `void jclear(JString *str)` - Clears allocated memory and resets size.
 
-### Basic String Operations
-- `int jnew(JString *str, const char *src)` - Initializes a new string.
-- `int jput(JString *str, const char *src)` - Copies a string.
-- `char* jget(JString *str)` - Returns the string's character data.
-- `int jlength(JString *str)` - Returns the length of the string.
-- `int jfind(JString *str, const char *substr)` - Finds a substring.
+### MEMORY HANDLING
 
-### String Modification
-- `int jcatc(JString *des, const char *src)` - Concatenates a C-string.
-- `int jcats(JString *des, JString src)` - Concatenates another JString.
-- `int jappendc(JString *des, const char *src)` - Appends a C-string efficiently.
-- `int jappends(JString *des, JString src)` - Appends another JString efficiently.
-- `void jreverse(JString *str)` - Reverses the string.
-- `void jstrip(JString *str)` - Removes leading and trailing spaces.
-- `void jtoupper(JString *str)` - Converts the string to uppercase.
-- `void jtolower(JString *str)` - Converts the string to lowercase.
-- `void jcapitalize(JString *str)` - Capitalizes the first letter.
-- `int jsubstr(JString *dest, JString *src, int start, int end)` - Extracts a substring.
-- `int jreplace(JString *str, const char *oldSubstr, const char *newSubstr)` - Replaces occurrences of a substring.
+#### `JString jcreate(const char *data);`
+Creates a new JString with the given data.
 
-### Input/Output
-- `int jscan(JString *str)` - Reads a line of input and stores it in JString.
-- `void jprint(JString *str)` - Prints the JString to the console.
+**Returns:**
+- `JString`  - Success
+- `NULL`     - Memory allocation failed
+
+#### `void jdestroy(JString str);`
+Frees the allocated memory for the JString.
+
+#### `int jexpand(JString str);`
+Expands the allocated memory for the string.
+Should not be called manually in normal use.
+
+**Returns:**
+- `0`  - Success
+- `-1`  - Null pointer error
+- `-2`  - Memory allocation failed
+
+#### `void jclear(JString str);`
+Clears the allocated memory for the string.
+Sets the data pointer to `NULL` and size to `0`.
+
+#### `int jnew(JString *str, const char *src);`
+Initializes a new string with the given source text.
+Clears any previous allocation and assigns new memory.
+
+**Returns:**
+- `0`  - Success
+- `-1`  - Null pointer error
+- `-2`  - Memory allocation failed
+
+### BASIC STRING OPERATIONS
+
+#### `int jlength(JString str);`
+Returns the length of the string (excluding the null terminator).
+
+#### `int jsize(JString str);`
+Returns the total allocated size of the string.
+
+#### `int jput(JString str, const char *src);`
+Copies the given source text into the string.
+If the allocated space is too small, it re-allocates memory.
+
+#### `char* jget(JString str);`
+Returns the string's character data.
+
+#### `int jfind(JString str, const char *substr);`
+Searches for a substring inside the string.
+Returns the index of the first occurrence or `-1` if not found.
+
+#### `int jcompare(JString str1, JString str2);`
+Compares two strings.
+Returns `0` if the strings are equal, otherwise a non-zero value.
+
+### STRING MODIFICATION
+
+#### `int jcopy(JString des, JString src);`
+Copies the content of one JString to another.
+
+#### `int jcatc(JString des, const char *src);`
+Concatenates a C-string to the JString.
+Expands memory every time it is called.
+**Recommended for infrequent concatenations.**
+
+#### `int jcats(JString des, JString src);`
+Concatenates another JString to the current string.
+Expands memory every time it is called.
+**Recommended for infrequent concatenations.**
+
+#### `int jappendc(JString des, const char *src);`
+Appends a C-string to the JString, expanding memory only when necessary.
+**Recommended for frequent appending operations.**
+
+#### `int jappends(JString des, JString src);`
+Appends another JString to the current string, expanding memory only when necessary.
+**Recommended for frequent appending operations.**
+
+#### `void jreverse(JString str);`
+Reverses the characters in the string.
+
+#### `void jstrip(JString str);`
+Removes leading and trailing spaces from the string.
+
+#### `void jtoupper(JString str);`
+Converts all characters in the string to uppercase.
+
+#### `void jtolower(JString str);`
+Converts all characters in the string to lowercase.
+
+#### `void jcapitalize(JString str);`
+Capitalizes the first character of the string.
+
+#### `int jsubstr(JString dest, JString src, int start, int end);`
+Extracts a substring from the given string between `start` and `end` indices.
+
+#### `int jreplace(JString str, const char *oldSubstr, const char *newSubstr);`
+Replaces all occurrences of a substring with another string.
+
+### STRING INPUT/OUTPUT
+
+#### `int jscan(JString str);`
+Reads a line of input and stores it in the JString.
+Expands memory dynamically if needed.
+
+#### `void jprint(const char *format, ...);`
+Prints the formatted string to the console.
+
+
 
 ## Error Handling
 JString functions return integer codes for status:
