@@ -47,7 +47,7 @@ int main() {
     JString str = jcreate(NULL);
     jprintf("Enter your string: ");
     jscan(str);
-    jprint("The string you entered is: %j");
+    jprint("The string you entered is: %j", str);
     jdestroy(str);
     return 0;
 }
