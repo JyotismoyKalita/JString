@@ -31,9 +31,8 @@ gcc your_program.c Jstring.c -o your_program
 
 ### Declaring a JString
 To ensure **proper initialization**, use the `jcreate("value")` function while declaring a `JString` variable assigned with string "value".
-Te declare a **NULL** JString variable, you can:
+To declare a **NULL** JString variable, you can:
 - `JString x = jcreate(NULL);`
-- `JString x = NULL;`
 ### WARNING:
 - Do not simply write `JString x;` and then perform other operations as it will have **garbage value pointing to unknown address**.
 - Always use `jdestroy(str);` when you dont need it or at the end of the function it was defined in to avoid memory leak.
@@ -170,6 +169,7 @@ Expands memory dynamically if needed.
 
 #### `void jprint(const char *format, ...);`
 Prints the formatted string to the console.
+New format specifier `%j` in a string, replaces it with the JString value
 
 
 
