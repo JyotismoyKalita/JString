@@ -44,7 +44,7 @@ To declare a **NULL** JString variable, you can:
 
 int main() {
     JString str = jcreate(NULL);
-    jprintf("Enter your string: ");
+    jprint("Enter your string: ");
     jscan(str);
     jprint("The string you entered is: %j", str);
     jdestroy(str);
